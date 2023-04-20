@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Login from './views/login'
 import Create from './views/create';
+import Home from './views/home';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     path: "/create-account",
     element: <Create />,
   },
+  {
+    path: "/home",
+    element: <Home />
+  }
 ]);
 
 function App() {

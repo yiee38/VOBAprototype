@@ -7,7 +7,11 @@ export default {
         'blue': {
           'button': '#3260A8',
           'button-dark': '#203e6d',
+          'component': '#f6f9fd'
         }
+      },
+      flex: {
+        '2': '2 2 0%'
       }
     },
   },

@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .card {
+      background-color: theme('colors.white');
+      border-radius: theme('borderRadius.lg');
+      padding: theme('spacing.6');
+      box-shadow: theme('boxShadow.xl');
+    }
+
+    .primary-button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: theme('colors.blue.button');
+        color: theme('colors.white');
+        font-size: theme('fontSize.2xl');
+        border-radius: 5px;
+    }
+
+    .primary-button:hover{
+        background-color: theme('colors.blue.button-dark');
+    }
+
+    .secondary-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-color: theme('colors.blue.button');
+        font-size: theme('fontSize.2xl');
+        border-width: 2px;
+        border-radius: 5px;
+    }
+
+    .secondary-button:hover{
+        border-color: theme('colors.blue.button-dark');
+    }
+    /* w-full text-2xl  hover:border-blue-button-dark */
+  }

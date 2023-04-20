@@ -15,11 +15,11 @@ function Create() {
           <input name="confirm-password" type="password" placeholder="johndoesosolalaso" className="border-zinc-950 border-b-2 w-full focus:outline-none focus:border-blue-button"/>
         </div>
         <div className="w-full flex justify-end gap-2">
-          <button className="flex justify-center items-center w-1/2 bg-blue-button text-white text-2xl hover:bg-blue-button-dark">
-            <span className="py-1">
+          <a href={`/home`} className="w-1/2 primary-button">
+            <span className="py-1 w-full m-0 text-center">
               CREATE ACCOUNT
             </span>
-          </button>
+          </a>
         </div>
       </div>
     </div>

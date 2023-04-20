@@ -15,17 +15,17 @@ function Login() {
         <div className="w-full flex justify-center gap-2">
           <a 
             href={`/create-account`}  
-            className="flex justify-center items-center w-full text-2xl border-2 border-blue-button hover:border-blue-button-dark"
+            className="w-full secondary-button"
           >
             <span className="py-1 w-full m-0 text-center">
               CREATE ACCOUNT
             </span>
           </a>
-          <button className="flex justify-center items-center w-full bg-blue-button text-white text-2xl hover:bg-blue-button-dark">
-            <span className="py-1">
+          <a href={`/home`} className="w-full primary-button">
+            <span className="py-1 w-full m-0 text-center">
               SIGN IN
             </span>
-          </button>
+          </a>
         </div>
       </div>
     </div>

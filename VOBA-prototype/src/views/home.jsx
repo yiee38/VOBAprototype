@@ -1,4 +1,7 @@
+import LogOutModal from "../components/LogOutModal";
+import LogOutButton from "../components/LogOutModal";
 import TestbedCard from "../components/TestbedCard";
+import TestBed from "../components/TestBed";
 
 function Home () {
   var sample_links = [
@@ -22,6 +25,37 @@ function Home () {
     }
   ]
 
+  var sample_test = [
+    {
+      title: 'Audio Tests',
+      description: 'A list of available tests to check the audio services of your VBSN',
+      task_list: [
+        'Audio Enhancement',
+        'Audio Masking',
+        'Audio File Clearance'
+      ]
+    },
+    {
+      title: 'Translation Tests',
+      description: 'A list of available tests to check the translation services for your VBSN',
+      task_list: [
+        'Text2Voice',
+        'Voice2Text',
+        'Voice2Voice'
+      ]
+    },
+    {
+      title: 'Security Tests',
+      description: 'A list of available tests to check the security of your VBSN',
+      task_list: [
+        'User Authentication',
+        'Firewall',
+        'Blockchain Encryption'
+      ]
+    }
+  ]
+
+
   return (
     <div className="flex flex-1 h-full w-full"> 
       <div className="p-10 flex flex-row justify-start items-start gap-10">
@@ -29,6 +63,15 @@ function Home () {
           return <TestbedCard key={index} preview={sample.preview} title={sample.title} description={sample.description} action={sample.action}/>
         })}
       </div>
+
+      <div className="p-10 flex flex-row justify-start items-start gap-10">
+        {
+        sample_test.map((sample) => {
+          return <TestBed title={sample.title} description={sample.description} task_list={sample.task_list}/>
+        })
+        }
+      </div>
+
     </div>
   )
 }

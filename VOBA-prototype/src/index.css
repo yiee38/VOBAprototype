@@ -61,7 +61,8 @@
         display: table-cell;
         text-align: center;
         vertical-align: middle;
-        margin: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
         font-size: larger;
     }
     
@@ -70,6 +71,18 @@
     }
 
     .button-wrapper:hover {
-        background-color: darkgray;
+        background-color: lightskyblue;
+    }
+
+    .test-list {
+        display: flex;
+        height: 100%;
+        justify-content: center;
+    }
+
+    .test {
+        display: inline-block;
+        align-self: flex-end;
+        width: 100%;
     }
   }

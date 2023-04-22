@@ -31,4 +31,45 @@
         border-color: theme('colors.blue.button-dark');
     }
     /* w-full text-2xl  hover:border-blue-button-dark */
+
+    .horizontal-line {
+        border-top: 1px solid black;
+        width: 100%;
+        float: left;
+    }
+
+    .vertical-line {
+        border-right: 1px solid black;
+        height: 100%;
+        float: left;
+        
+    }
+
+    .tests-ide {
+        width: 10%;
+        height: 100%;
+        text-align: center;
+        display: grid;
+        grid-template-rows: 10% 10% 80%;
+    }
+
+    .tests-ide div {
+        align-items: end;
+    }
+    
+    .button-wrapper {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        margin: 10px;
+        font-size: larger;
+    }
+    
+    .button-wrapper span {
+        display: block;
+    }
+
+    .button-wrapper:hover {
+        background-color: darkgray;
+    }
   }

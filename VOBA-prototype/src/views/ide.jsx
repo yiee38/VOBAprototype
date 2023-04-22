@@ -2,6 +2,8 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import IDETest from "../components/IDETest";
+import Popup from "../components/Popup";
+import { useState } from 'react'
 
 function IDE() {
     var sample_tests = [
@@ -18,6 +20,9 @@ function IDE() {
             title: 'User Authentication'
         }
     ]
+
+    const [buttonPopup, setButtonPopup] = useState(false);
+
   return (
     <div class="page">
         <div class="horizontal-line vertical-line tests-ide" style={{height: "100vh"}}>
@@ -25,7 +30,7 @@ function IDE() {
                 <FontAwesomeIcon icon={faPlay} />
                 <span>Run Tests</span>
             </button>
-            <button class="button-wrapper">
+            <button class="button-wrapper" onClick={() => setButtonPopup(true)}>
                 <FontAwesomeIcon icon={faPenToSquare} />
                 <span>Edit Tests</span>
             </button>
@@ -38,6 +43,9 @@ function IDE() {
                 </div>
             </div>
         </div>
+        <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+            <div>POPPED UP BABYYYYYYY</div>
+        </Popup>
     </div>
   )
 }

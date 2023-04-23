@@ -62,19 +62,23 @@ function IDE() {
         console.log("index: " + index);
 
         console.log("type:", tests[index].type);
-        const newTests = tests.map(test => {
-            if (test.type === "current") {
-                return {
-                    ...test, type: "available"
-                };
-            } else {
-                return {
-                    ...test, type: "current"
-                };
+        setTests(tests.map((test) => {
+            console.log("id: ", test.id);
+            if (test.id === index) {
+                if (test.type === "current") {
+                    return {
+                        ...test, type: "available"
+                    };
+                } else {
+                    return {
+                        ...test, type: "current"
+                    };
+                }
             }
-        })
-        
-        setTests(newTests);
+            else {
+                return test;
+            }
+        }))
     }
 
   return (
@@ -91,7 +95,7 @@ function IDE() {
             <div class="test-list">
                 <div class="test">
                     <div className="text-xl">Current Tests</div>
-                    {initial_tests.map((sample, index) => {
+                    {tests.map((sample, index) => {
                         return <IDETest key={index} title={sample.title} list='current' type={sample.type}/>
                     })}
                 </div>
@@ -102,7 +106,7 @@ function IDE() {
                 <div className="current-tests-wrapper">
                     <div className="font-black text-3xl text-center">Current Tests</div>
                     <div className="available-tests">
-                        {initial_tests.map((sample, index) => {
+                        {tests.map((sample, index) => {
                             return <EditTest key={index} title={sample.title} list="current" type={sample.type} updateTest={updateTestTypes} id={sample.id}/>
                         })}
                     </div> 
@@ -110,7 +114,7 @@ function IDE() {
                 <div className="available-tests-wrapper">
                     <div className="font-black text-3xl text-center">Available Tests</div>
                     <div className="available-tests">
-                        {initial_tests.map((sample, index) => {
+                        {tests.map((sample, index) => {
                             return <EditTest key={index} title={sample.title} list="available" type={sample.type} updateTest={updateTestTypes} id={sample.id}/>
                         })}
                     </div>  

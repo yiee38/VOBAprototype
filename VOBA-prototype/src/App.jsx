@@ -3,6 +3,7 @@ import Login from './views/login'
 import Create from './views/create';
 import Home from './views/home';
 import IDE from './views/ide';
+import Report from './views/report';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/ide",
     element: <IDE />
+  },
+  {
+    path: "/report",
+    element: <Report />
   }
 ]);
 

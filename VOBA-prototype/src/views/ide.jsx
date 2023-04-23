@@ -84,10 +84,12 @@ function IDE() {
   return (
     <div class="page">
         <div class="horizontal-line vertical-line tests-ide" style={{height: "100vh"}}>
-            <button class="button-wrapper">
-                <FontAwesomeIcon icon={faPlay} />
-                <span>Run Tests</span>
-            </button>
+            <a href={'/report'} className="button-wrapper">
+                <button className="mt-10">
+                    <FontAwesomeIcon icon={faPlay} />
+                    <span>Run Tests</span>
+                </button>
+            </a>
             <button class="button-wrapper" onClick={() => setButtonPopup(true)}>
                 <FontAwesomeIcon icon={faPenToSquare} />
                 <span>Edit Tests</span>

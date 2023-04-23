@@ -82,7 +82,7 @@ function IDE() {
     }
 
   return (
-    <div class="page">
+    <div className="page">
         <div class="horizontal-line vertical-line tests-ide" style={{height: "100vh"}}>
             <a href={'/report'} className="button-wrapper">
                 <button className="mt-10">
@@ -102,6 +102,9 @@ function IDE() {
                     })}
                 </div>
             </div>
+        </div>
+        <div className="text-5xl text-center mt-96">
+            SAMPLE IDE INTERFACE
         </div>
         <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
             <div className="edit-test-wrapper">

@@ -118,8 +118,9 @@ function IDE() {
           </div>
         </div>
       </div>
-      <div className="text-5xl text-center flex-1 flex justify-center items-center bg-sky-950 text-white">
-        SAMPLE IDE INTERFACE
+      <div className="text-center flex-1 flex justify-center items-center bg-sky-950 flex-col">
+        <div className="text-5xl text-white pb-4 self-start ml-24">Begin Coding Below:</div>
+        <textarea rows="40" cols="304" placeholder="print(&quot;Hello, World!&quot;)"></textarea>
       </div>
       <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
         <div className="edit-test-wrapper">

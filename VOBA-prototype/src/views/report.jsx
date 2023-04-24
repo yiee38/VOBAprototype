@@ -38,7 +38,7 @@ function Report(props) {
       <div className="flex flex-col justify-start items-start gap-5">
         <div className="flex flex-col gap-3" >
           <div className="text-lg">{report.title}</div>
-          <div className="text-gray-500 flex flex-row">
+          <div className="text-gray-500 flex flex-row gap-4">
             <div>{report.author}</div>
             <div>{report.date}</div>
             <div>{report.type}</div>

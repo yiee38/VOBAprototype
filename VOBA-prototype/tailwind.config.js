@@ -8,6 +8,9 @@ export default {
           'button': '#3260A8',
           'button-dark': '#203e6d',
           'component': '#f6f9fd'
+        },
+        'salmon': {
+          'report': '#f88'
         }
       },
       flex: {

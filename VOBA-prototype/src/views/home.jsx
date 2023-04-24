@@ -1,7 +1,7 @@
 import LogOutModal from "../components/LogOutModal";
 import LogOutButton from "../components/LogOutModal";
-import TestbedCard from "../components/TestbedCard";
-import TestBed from "../components/TestBed";
+import NavigationCard from "../components/NavigationCard";
+import TestBed from "../components/CreateTestbedCard";
 
 function Home () {
   var sample_links = [
@@ -9,19 +9,22 @@ function Home () {
       preview: 'TESTBEDS',
       title: 'Create and Resume',
       description: 'Create new testbeds and access previously created testbeds.',
-      action: 'Go To Testbeds'
+      action: 'Go To Testbeds',
+      link: '/testbeds'
     },
     {
       preview: 'VBSNs',
       title: 'Create, Resume, Explore',
       description: 'Create new VBSNs, access previously developed VBSNs, or explore our provided sample VBSNs.',
-      action: 'Go To VBSNs'
+      action: 'Go To VBSNs',
+      link: '/vbsns'
     },
     {
       preview: 'DATABASE',
       title: 'Access and Upload',
       description: 'Access reports within the database and upload yours.',
-      action: 'Go To Database'
+      action: 'Go To Database',
+      link: '/database'
     }
   ]
 
@@ -57,21 +60,12 @@ function Home () {
 
 
   return (
-    <div className="flex flex-1 h-full w-full"> 
-      <div className="p-10 flex flex-row justify-start items-start gap-10">
+    <div className="flex flex-1 h-full w-full justify-center pt-32"> 
+      <div className="flex flex-row justify-start items-start gap-10">
         {sample_links.map((sample, index) => {
-          return <TestbedCard key={index} preview={sample.preview} title={sample.title} description={sample.description} action={sample.action}/>
+          return <NavigationCard key={index} preview={sample.preview} title={sample.title} description={sample.description} action={sample.action} href={sample.link}/>
         })}
       </div>
-
-      <div className="p-10 flex flex-row justify-start items-start gap-10">
-        {
-        sample_test.map((sample) => {
-          return <TestBed title={sample.title} description={sample.description} task_list={sample.task_list}/>
-        })
-        }
-      </div>
-
     </div>
   )
 }

@@ -12,8 +12,6 @@
         font-size: theme('fontSize.2xl');
         border-radius: 5px;
         padding: 5px;
-        border-color: black;
-        border-width: 2px;
     }
 
     .primary-button:hover{
@@ -165,4 +163,5 @@
         width: 50;
         height: 50;
     }
+      
   }

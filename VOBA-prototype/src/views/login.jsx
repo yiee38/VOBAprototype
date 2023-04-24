@@ -7,9 +7,9 @@ function Login() {
         <div className="text-5xl">VOBA</div>
         <div className="text-3xl text-slate-500">log in</div>
         <div className="flex flex-col w-full items-start pt-10 pb-5">
-          <label for="name" className="text-xl">username: </label>
+          <label htmlFor="name" className="text-xl">username: </label>
           <input name="name" placeholder="johndoe@doe.com" className="border-zinc-950 border-b-2 w-full focus:outline-none focus:border-blue-button"/>
-          <label for="password" className="pt-5 text-xl">password: </label>
+          <label htmlFor="password" className="pt-5 text-xl">password: </label>
           <input name="password" type="password" placeholder="johndoesosolalaso" className="border-zinc-950 border-b-2 w-full focus:outline-none focus:border-blue-button"/>
         </div>
         <div className="w-full flex justify-center gap-2">

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import LogOutModal from "../components/LogOutModal";
 import LogOutButton from "../components/LogOutModal";
 import TestbedCard from "../components/TestbedCard";
@@ -9,8 +9,25 @@ import {
 
 function TestBeds () {
   const [newTestbed, setNewTestbed] = useState(false)
-
+  const [testbeds, setTestbeds] = useState([])
+  const [nameInput, setNameInput] = useState('default')
+  const [descInput, setDescInput] = useState('default')
   const navigate = useNavigate()
+
+  useEffect(()=> {
+    localStorage.setItem('testbeds', JSON.stringify([
+      {
+        title: 'myFirstTestbed',
+        description: 'My first attempt at a Testbed - uses Text2Voice, Firewall, and Audio Masking tests with myFirstVBSN'
+      }
+    ]))
+    setTestbeds(JSON.parse(localStorage.getItem('testbeds')))
+
+    return () => {
+      localStorage.removeItem("testbeds");
+    }
+  }, []) 
+
 
   var sample_test = [
     {
@@ -82,10 +99,27 @@ function TestBeds () {
             </div>
           </div>
           { newTestbed &&
-            <div className="w-full flex flex-row gap-10 justify-start">
-              {sample_test.map((sample, index) => {
-                return <TestBed key={index} title={sample.title} description={sample.description} task_list={sample.task_list}/>})
-              }
+            <div className="w-full flex flex-col justify-start">
+              <label htmlFor="name" className="text-gray-500">name: </label>
+              <input 
+                name="name" 
+                className="border-zinc-950 border-b-2 w-full focus:outline-none focus:border-blue-button" 
+                value={nameInput}
+                onChange={(e) => {setNameInput(e.target.value)}}
+              />
+              <label htmlFor="desc" className="pt-2 text-gray-500">description: </label>
+              <input 
+                name="desc" 
+                className="border-zinc-950 border-b-2 w-full focus:outline-none focus:border-blue-button" 
+                value={descInput}
+                onChange={(e) => {setDescInput(e.target.value)}}
+              />
+              <div className="w-full flex flex-row gap-10 justify-start">
+                {sample_test.map((sample, index) => {
+                  return <TestBed key={index} title={sample.title} description={sample.description} task_list={sample.task_list}/>})
+                }
+              </div>
+
             </div>
           }
         </div>
@@ -94,7 +128,7 @@ function TestBeds () {
             <span className="text-lg text-gray-500">Previous Testbeds</span>
           </div>
           <div className="w-full flex flex-row gap-10 justify-start">
-            {sample_history.map((history, index) => {
+            {testbeds.map((history, index) => {
               return <TestbedCard key={history.title} title={history.title} description={history.description} handleDelete={()=>handleDelete(index)}/> })
             }
           </div>

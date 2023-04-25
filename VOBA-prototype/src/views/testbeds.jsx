@@ -71,7 +71,7 @@ function TestBeds () {
             <div className='flex flex-row gap-3'>
               <button className="secondary-button text-lg" onClick={handleNewTestbed}>
                 <span className="px-1">
-                  {newTestbed? 'Show Options':'Hide Options'}
+                  {newTestbed? 'Hide Options':'Show Options'}
                 </span>
               </button>  
               <button className="primary-button text-lg" onClick={handleCreate}>

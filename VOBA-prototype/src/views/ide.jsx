@@ -120,6 +120,7 @@ function IDE() {
 
   useEffect(() => {
     initializeTestTypes();
+    setReport(JSON.parse(localStorage.getItem('reports')))
   }, []);
 
   useEffect(() => {
@@ -142,10 +143,14 @@ function IDE() {
     var day = newDate.getDate();
     var year = newDate.getFullYear();
 
-    console.log("here");
+    console.log(report);
 
-    localStorage.setItem('reports', JSON.stringify([{title: vbsns[0].title + 'Report', description: 'Report for ' + vbsns[0].title, tests: vbsns[0].tests, date: month + '/' + day + '/' + year}]))
-    setReport(JSON.parse(localStorage.getItem('reports')));
+    const newReport = [...report, {title: vbsns[0].title + 'Report', description: 'Report for ' + vbsns[0].title, tests: vbsns[0].tests, date: month + '/' + day + '/' + year}];
+
+    console.log(newReport);
+
+    localStorage.setItem('reports', JSON.stringify(newReport))
+    setReport(newReport);
   }
 
     /*

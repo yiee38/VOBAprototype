@@ -17,7 +17,7 @@ function VbsnList () {
   const [showForm, setShowForm] = useState(false)
 
   useEffect(()=> {
-    localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: [0, 1, 5]}]))
+    localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: ['Firewall', 'Text2Voice']}]))
     setVbsn(JSON.parse(localStorage.getItem('vbsns')))
   }, []) 
 

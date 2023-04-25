@@ -73,8 +73,7 @@ function IDE() {
 
   const [buttonPopup, setButtonPopup] = useState(false);
   const [tests, setTests] = useState(initial_tests);
-
-  const [testSelections, setTestSelections] = useState([])
+  const [report, setReport] = useState([]);
 
   function initializeTestTypes() {
     var currVBSNs = localStorage.getItem('vbsns');
@@ -135,6 +134,20 @@ function IDE() {
     localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: currTests}]));
   }, [tests]);
 
+  function setReportItem() {
+    var currVBSNs = localStorage.getItem('vbsns');
+    var vbsns = JSON.parse(currVBSNs);
+    var newDate = new Date();
+    var month = newDate.getMonth() + 1;
+    var day = newDate.getDate();
+    var year = newDate.getFullYear();
+
+    console.log("here");
+
+    localStorage.setItem('reports', JSON.stringify([{title: vbsns[0].title + 'Report', description: 'Report for ' + vbsns[0].title, tests: vbsns[0].tests, date: month + '/' + day + '/' + year}]))
+    setReport(JSON.parse(localStorage.getItem('reports')));
+  }
+
     /*
     <div class="flex flex-row jusitfy-end items-center w-ful ">
           <a href={'/report'} className="">
@@ -157,7 +170,7 @@ function IDE() {
               <FontAwesomeIcon icon={faPenToSquare} />
               <span >Edit</span>
             </button>
-            <a href={'/report'} className="flex flex-row gap-1 items-center hover:text-blue-button-dark">
+            <a href={'/report'} className="flex flex-row gap-1 items-center hover:text-blue-button-dark" onClick={() => setReportItem()}>
               <FontAwesomeIcon icon={faPlay} />
             <span>Run </span>
             </a>

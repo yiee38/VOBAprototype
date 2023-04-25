@@ -27,17 +27,17 @@ function IDE() {
     {
       id: 0,
       title: 'Audio Enhancement',
-      type: 'current'
+      type: 'available'
     },
     {
       id: 1,
       title: 'Audio Masking',
-      type: 'current'
+      type: 'available'
     },
     {
       id: 2,
       title: 'Audio File Clearance',
-      type: 'current'
+      type: 'available'
     },
     {
       id: 3,
@@ -71,33 +71,69 @@ function IDE() {
     }
   ]
 
-  
-
   const [buttonPopup, setButtonPopup] = useState(false);
   const [tests, setTests] = useState(initial_tests);
 
-  function updateTestTypes(index) {
-  console.log("index: " + index);
+  const [testSelections, setTestSelections] = useState([])
 
-  console.log("type:", tests[index].type);
-  setTests(tests.map((test) => {
-    console.log("id: ", test.id);
-    if (test.id === index) {
-      if (test.type === "current") {
-        return {
-          ...test, type: "available"
-        };
-      } else {
-        return {
-          ...test, type: "current"
-        };
+  function initializeTestTypes() {
+    var currVBSNs = localStorage.getItem('vbsns');
+    var vbsns = JSON.parse(currVBSNs);
+
+    var currTests = Object.values(vbsns[0])[3];
+
+    setTests(tests.map((test) => {
+      for (let i = 0; i < currTests.length; i++) {
+        if (test.title === currTests[i]) {
+          if (test.type === "current") {
+            return {
+              ...test, type: "available"
+            };
+          } else {
+            return {
+              ...test, type: "current"
+            };
+          }
+        }
       }
-    }
-    else {
       return test;
-    }
     }))
   }
+
+  function updateTestTypes(index) {
+    setTests(tests.map((test) => {
+      if (test.id === index) {
+        if (test.type === "current") {
+          return {
+            ...test, type: "available"
+          };
+        } else {
+          return {
+            ...test, type: "current"
+          };
+        }
+      }
+      else {
+        return test;
+      }
+    }))
+  }
+
+  useEffect(() => {
+    initializeTestTypes();
+  }, []);
+
+  useEffect(() => {
+    var currTests = [];
+
+    for (let i = 0; i < tests.length; i++) {
+      if (tests[i].type === 'current') {
+        currTests.push(tests[i].title);
+      }
+    }
+
+    localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: currTests}]));
+  }, [tests]);
 
     /*
     <div class="flex flex-row jusitfy-end items-center w-ful ">
@@ -144,6 +180,26 @@ function IDE() {
           width="800px"
         />
       </div>
+      <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+        <div className="edit-test-wrapper">
+          <div className="current-tests-wrapper">
+            <div className="font-black text-3xl text-center">Current Tests</div>
+              <div className="available-tests">
+                {tests.map((sample, index) => {
+                  return <EditTest key={index} title={sample.title} list="current" type={sample.type} updateTest={updateTestTypes} id={sample.id}/>
+                })}
+              </div> 
+            </div>
+            <div className="available-tests-wrapper">
+              <div className="font-black text-3xl text-center">Available Tests</div>
+              <div className="available-tests">
+                {tests.map((sample, index) => {
+                  return <EditTest key={index} title={sample.title} list="available" type={sample.type} updateTest={updateTestTypes} id={sample.id}/>
+                })}
+            </div>  
+          </div>
+        </div>
+      </Popup>
     </div>
   )
 }

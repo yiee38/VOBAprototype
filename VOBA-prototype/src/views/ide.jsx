@@ -6,54 +6,67 @@ import Popup from "../components/Popup";
 import EditTest from "../components/EditTest";
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
+import { useLocation } from 'react-router-dom';
 
 import { useState } from 'react'
+
+/*
+'Audio Enhancement':false,
+    'Audio Masking':false,
+    'Audio File Clearance':false,
+    'Text2Voice':false,
+    'Voice2Text':false,
+    'Voice2Voice':false,
+    'User Authentication':false,
+    'Firewall':false,
+    'Blockchain Encryption':false,
+*/
 
 function IDE() {
   var initial_tests = [
     {
       id: 0,
-      title: 'Audio',
-      type: 'available'
+      title: 'Audio Enhancement',
+      type: 'current'
     },
     {
       id: 1,
-      title: 'Blockchain Encryption',
-      type: 'available'
+      title: 'Audio Masking',
+      type: 'current'
     },
     {
       id: 2,
-      title: 'User Authentication',
-      type: 'available'
+      title: 'Audio File Clearance',
+      type: 'current'
     },
     {
       id: 3,
-      title: 'Firewall',
-      type: 'available'
-    },
-    {
-      id: 4,
-      title: 'DDoS',
-      type: 'available'
-    },
-    {
-      id: 5,
-      title: 'General Attacks',
-      type: 'available'
-    },
-    {
-      id: 6,
       title: 'Text2Voice',
       type: 'available'
     },
     {
+      id: 4,
+      title: 'Voice2Text',
+      type: 'available'
+    },
+    {
+      id: 5,
+      title: 'Voice2Voice',
+      type: 'available'
+    },
+    {
+      id: 6,
+      title: 'User Authentication',
+      type: 'available'
+    },
+    {
       id: 7,
-      title: 'Audio Translation',
+      title: 'Firewall',
       type: 'available'
     },
     {
       id: 8,
-      title: 'Connection',
+      title: 'Blockchain Encryption',
       type: 'available'
     }
   ]
@@ -63,64 +76,28 @@ function IDE() {
   const [buttonPopup, setButtonPopup] = useState(false);
   const [tests, setTests] = useState(initial_tests);
 
-  function initializeTestTypes() {
-    var currVBSNs = localStorage.getItem('vbsns');
-    var vbsns = JSON.parse(currVBSNs);
-
-    var currTests = Object.values(vbsns[0])[3];
-
-    setTests(tests.map((test) => {
-      for (let i = 0; i < currTests.length; i++) {
-        if (test.title === currTests[i]) {
-          if (test.type === "current") {
-            return {
-              ...test, type: "available"
-            };
-          } else {
-            return {
-              ...test, type: "current"
-            };
-          }
-        }
-      }
-      return test;
-    }))
-  }
-
   function updateTestTypes(index) {
-    setTests(tests.map((test) => {
-      if (test.id === index) {
-        if (test.type === "current") {
-          return {
-            ...test, type: "available"
-          };
-        } else {
-          return {
-            ...test, type: "current"
-          };
-        }
-      }
-      else {
-        return test;
-      }
-    }))
-  }
+  console.log("index: " + index);
 
-  useEffect(() => {
-    initializeTestTypes();
-  }, []);
-
-  useEffect(() => {
-    var currTests = [];
-
-    for (let i = 0; i < tests.length; i++) {
-      if (tests[i].type === 'current') {
-        currTests.push(tests[i].title);
+  console.log("type:", tests[index].type);
+  setTests(tests.map((test) => {
+    console.log("id: ", test.id);
+    if (test.id === index) {
+      if (test.type === "current") {
+        return {
+          ...test, type: "available"
+        };
+      } else {
+        return {
+          ...test, type: "current"
+        };
       }
     }
-
-    localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: currTests}]));
-  }, [tests]);
+    else {
+      return test;
+    }
+    }))
+  }
 
     /*
     <div class="flex flex-row jusitfy-end items-center w-ful ">
@@ -136,7 +113,7 @@ function IDE() {
 
   return (
     <div className="flex flex-col flex-1 h-full w-full px-10 pb-5">
-      <div class="flex flex-col w-full gap-8">
+      <div className="flex flex-col w-full gap-8">
         <div className="flex flex-row justify-between gap-3 text-lg items-end">
           <div className='text-lg text-gray-500'>Integrated VBSN Editor</div>
           <div className="flex flex-row justify-end gap-3 text-blue-button">
@@ -150,7 +127,7 @@ function IDE() {
             </a>
           </div>
         </div>
-        <div class="flex flex-row items-end gap-5">
+        <div className="flex flex-row items-end gap-5">
           <div className="text-xl">Current Tests: </div>
           <div className="flex flex-row gap-5">
             {tests.map((sample, index) => {
@@ -167,26 +144,6 @@ function IDE() {
           width="800px"
         />
       </div>
-      <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
-        <div className="edit-test-wrapper">
-          <div className="current-tests-wrapper">
-            <div className="font-black text-3xl text-center">Current Tests</div>
-              <div className="available-tests">
-                {tests.map((sample, index) => {
-                  return <EditTest key={index} title={sample.title} list="current" type={sample.type} updateTest={updateTestTypes} id={sample.id}/>
-                })}
-              </div> 
-            </div>
-            <div className="available-tests-wrapper">
-              <div className="font-black text-3xl text-center">Available Tests</div>
-              <div className="available-tests">
-                {tests.map((sample, index) => {
-                  return <EditTest key={index} title={sample.title} list="available" type={sample.type} updateTest={updateTestTypes} id={sample.id}/>
-                })}
-            </div>  
-          </div>
-        </div>
-      </Popup>
     </div>
   )
 }

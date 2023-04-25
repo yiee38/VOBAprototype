@@ -9,7 +9,7 @@ function TestBed(props) {
           <div className="text-2xl font-black">{props.title}</div>
           <div className="text-gray-500">{props.description}</div>
           <hr />
-          <TaskList task_list={props.task_list}></TaskList>
+          <TaskList task_list={props.task_list} handleTaskSelection={props.handleTaskSelection}></TaskList>
         </div>
       </div>
     </div>

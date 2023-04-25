@@ -17,12 +17,13 @@ function VbsnList () {
   const [showForm, setShowForm] = useState(false)
 
   useEffect(()=> {
-    localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: [0, 1, 5]}]))
-    setVbsn(JSON.parse(localStorage.getItem('vbsns')))
-
-    return () => {
-      localStorage.removeItem("vbsns");
+    console.log(localStorage.getItem('vbsns'))
+    if (!localStorage.getItem('vbsns')) {
+    
+      localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: [0, 1, 5]}]))
+      
     }
+    setVbsn(JSON.parse(localStorage.getItem('vbsns')))
   }, []) 
 
   var sample_history = [

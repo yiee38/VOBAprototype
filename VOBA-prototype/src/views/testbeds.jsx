@@ -15,17 +15,17 @@ function TestBeds () {
   const navigate = useNavigate()
 
   useEffect(()=> {
-    localStorage.setItem('testbeds', JSON.stringify([
-      {
-        title: 'myFirstTestbed',
-        description: 'My first attempt at a Testbed - uses Text2Voice, Firewall, and Audio Masking tests with myFirstVBSN'
-      }
-    ]))
-    setTestbeds(JSON.parse(localStorage.getItem('testbeds')))
-
-    return () => {
-      localStorage.removeItem("testbeds");
+    console.log(localStorage.getItem('testbeds'))
+    if (!localStorage.getItem('testbeds')) {
+      localStorage.setItem('testbeds', JSON.stringify([
+        {
+          title: 'myFirstTestbed',
+          description: 'My first attempt at a Testbed - uses Text2Voice, Firewall, and Audio Masking tests with myFirstVBSN'
+        }
+      ]))
+      
     }
+    setTestbeds(JSON.parse(localStorage.getItem('testbeds')))
   }, []) 
 
 
@@ -59,6 +59,18 @@ function TestBeds () {
     },
   ]
 
+  const [taskSelection, setTaskSelection] = useState({
+    'Audio Enhancement':false,
+    'Audio Masking':false,
+    'Audio File Clearance':false,
+    'Text2Voice':false,
+    'Voice2Text':false,
+    'Voice2Voice':false,
+    'User Authentication':false,
+    'Firewall':false,
+    'Blockchain Encryption':false,
+  })
+
   var sample_history = [
     {
       title: 'myFirstTestbed',
@@ -66,12 +78,18 @@ function TestBeds () {
     }
   ]
 
+  const handleTaskSelection = (task) => {
+    const newTasks = taskSelection
+    newTasks[task] = !newTasks[task]
+    setTaskSelection({...taskSelection,newTasks})
+  }
+
   const handleNewTestbed = () => {
     setNewTestbed(!newTestbed);
   }
 
   const handleCreate = () =>{
-    navigate('/ide')
+    navigate('/ide', { state: { selections: taskSelection }})
   }
 
   const handleDelete = (id) => {
@@ -116,7 +134,13 @@ function TestBeds () {
               />
               <div className="w-full flex flex-row gap-10 justify-start">
                 {sample_test.map((sample, index) => {
-                  return <TestBed key={index} title={sample.title} description={sample.description} task_list={sample.task_list}/>})
+                  return <TestBed 
+                    key={index} 
+                    title={sample.title} 
+                    description={sample.description} 
+                    task_list={sample.task_list}
+                    handleTaskSelection={handleTaskSelection}
+                  />})
                 }
               </div>
 

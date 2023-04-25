@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import IDETest from "../components/IDETest";
@@ -14,17 +14,17 @@ function IDE() {
     {
       id: 0,
       title: 'Audio',
-      type: 'current'
+      type: 'available'
     },
     {
       id: 1,
       title: 'Blockchain Encryption',
-      type: 'current'
+      type: 'available'
     },
     {
       id: 2,
       title: 'User Authentication',
-      type: 'current'
+      type: 'available'
     },
     {
       id: 3,
@@ -58,31 +58,69 @@ function IDE() {
     }
   ]
 
+  
+
   const [buttonPopup, setButtonPopup] = useState(false);
   const [tests, setTests] = useState(initial_tests);
 
-  function updateTestTypes(index) {
-  console.log("index: " + index);
+  function initializeTestTypes() {
+    var currVBSNs = localStorage.getItem('vbsns');
+    var vbsns = JSON.parse(currVBSNs);
 
-  console.log("type:", tests[index].type);
-  setTests(tests.map((test) => {
-    console.log("id: ", test.id);
-    if (test.id === index) {
-      if (test.type === "current") {
-        return {
-          ...test, type: "available"
-        };
-      } else {
-        return {
-          ...test, type: "current"
-        };
+    var currTests = Object.values(vbsns[0])[3];
+
+    setTests(tests.map((test) => {
+      for (let i = 0; i < currTests.length; i++) {
+        if (test.title === currTests[i]) {
+          if (test.type === "current") {
+            return {
+              ...test, type: "available"
+            };
+          } else {
+            return {
+              ...test, type: "current"
+            };
+          }
+        }
       }
-    }
-    else {
       return test;
-    }
     }))
   }
+
+  function updateTestTypes(index) {
+    setTests(tests.map((test) => {
+      if (test.id === index) {
+        if (test.type === "current") {
+          return {
+            ...test, type: "available"
+          };
+        } else {
+          return {
+            ...test, type: "current"
+          };
+        }
+      }
+      else {
+        return test;
+      }
+    }))
+  }
+
+  useEffect(() => {
+    initializeTestTypes();
+  }, []);
+
+  useEffect(() => {
+    var currTests = [];
+
+    for (let i = 0; i < tests.length; i++) {
+      if (tests[i].type === 'current') {
+        currTests.push(tests[i].title);
+      }
+    }
+
+    localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: currTests}]));
+  }, [tests]);
 
     /*
     <div class="flex flex-row jusitfy-end items-center w-ful ">

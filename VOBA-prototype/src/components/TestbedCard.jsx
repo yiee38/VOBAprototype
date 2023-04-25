@@ -28,7 +28,7 @@ function TestbedCard(props) {
                 </span>
               </button>  
             }         
-            <a href='/ide' className="primary-button text-base" onClick={console.log('Access')}>
+            <a href='/ide' className="primary-button text-base" >
               <span className="px-1">
                 Access
               </span>

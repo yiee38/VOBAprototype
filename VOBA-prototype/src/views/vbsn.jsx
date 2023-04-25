@@ -12,10 +12,17 @@ function VbsnList () {
 
   const navigate = useNavigate()
   const [vbsn, setVbsn] = useState([])
+  const [nameInput, setNameInput] = useState('default')
+  const [descInput, setDescInput] = useState('default')
+  const [showForm, setShowForm] = useState(false)
 
   useEffect(()=> {
-    localStorage.setItem('myData', JSON.stringify({name: 'John', age: 30}));
-    
+    localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: [0, 1, 5]}]))
+    setVbsn(JSON.parse(localStorage.getItem('vbsns')))
+
+    return () => {
+      localStorage.removeItem("vbsns");
+    }
   }, []) 
 
   var sample_history = [
@@ -28,24 +35,31 @@ function VbsnList () {
   var presets = [
     {
       title: 'VBSN sample 1 - Supersafe ChatRoom',
-      description: 'VBSN Sample with bloackchain encryption, audio enhancement, and audio masking'
+      description: 'VBSN Sample with bloackchain encryption, audio enhancement, and audio masking',
+      tests: [1, 2, 3, 4, 5]
     },
     {
       title: 'VBSN sample 2 - Voice Master',
-      description: 'VBSN Sample with bloackchain encryption, audio enhancement, audio masking, and user authentication'
+      description: 'VBSN Sample with bloackchain encryption, audio enhancement, audio masking, and user authentication',
+      tests: [1, 2, 3, 4, 5]
     }
   ]
 
-  const handleNewTestbed = () => {
-    setNewTestbed(!newTestbed);
+  const handleShowOptions = () => {
+    setShowForm(!showForm)
   }
 
   const handleCreate = () =>{
-    navigate('/ide')
+    const newVBSN = [...vbsn, {id:vbsn[vbsn.length-1].id+1, title:nameInput, description:descInput}]
+    localStorage.setItem('vbsns', JSON.stringify(newVBSN))
+    setVbsn(newVBSN)
+    //navigate('/ide')
   }
 
   const handleDelete = (id) => {
-    console.log(id)
+    const newVBSN = vbsn.filter(a => a.id !== id)
+    localStorage.setItem('vbsns', JSON.stringify(newVBSN))
+    setVbsn(newVBSN)
   }
 
 
@@ -55,6 +69,11 @@ function VbsnList () {
         <div className="flex flex-row justify-between items-end">
           <span className="text-lg">VBSNs</span>
           <div className='flex flex-row gap-3'>
+            <button className="secondary-button text-lg" onClick={handleShowOptions}>
+              <span className="px-1">
+                {newTestbed? 'Show Options':'Hide Options'}
+              </span>
+            </button>  
             <button className="primary-button text-lg" onClick={handleCreate}>
               <span className="px-1">
                 Create New
@@ -62,13 +81,31 @@ function VbsnList () {
             </button>  
           </div>
         </div>
+          {showForm &&
+            <div className="w-full flex flex-col justify-start">
+              <label htmlFor="name" className="text-gray-500">name: </label>
+              <input 
+                name="name" 
+                className="border-zinc-950 border-b-2 w-full focus:outline-none focus:border-blue-button" 
+                value={nameInput}
+                onChange={(e) => {setNameInput(e.target.value)}}
+              />
+              <label htmlFor="desc" className="pt-2 text-gray-500">description: </label>
+              <input 
+                name="desc" 
+                className="border-zinc-950 border-b-2 w-full focus:outline-none focus:border-blue-button" 
+                value={descInput}
+                onChange={(e) => {setDescInput(e.target.value)}}
+              />
+            </div>
+          }
         <div className='flex flex-col gap-4 w-full'>
           <div className="flex flex-row justify-between items-end">
             <span className="text-lg text-gray-500">Previous VBSNs</span>
           </div>
-          <div className="w-full flex flex-row gap-10 justify-start">
-            {sample_history.map((history, index) => {
-              return <TestbedCard key={history.title} title={history.title} description={history.description} handleDelete={()=>handleDelete(index)}/> })
+          <div className="w-full flex flex-row gap-10 justify-start flex-wrap">
+            {vbsn.map((history, _) => {
+              return <TestbedCard tests={history.tests} key={history.id} title={history.title} description={history.description} handleDelete={()=>handleDelete(history.id)}/> })
             }
           </div>
         </div>
@@ -78,7 +115,7 @@ function VbsnList () {
           </div>
           <div className="w-full flex flex-row gap-10 justify-start">
             {presets.map((history, index) => {
-              return <TestbedCard key={history.title} preset title={history.title} description={history.description} handleDelete={()=>handleDelete(index)}/>})
+              return <TestbedCard tests={history.tests} key={history.title} preset title={history.title} description={history.description} handleDelete={()=>handleDelete(index)}/>})
             }
           </div>
         </div>
@@ -88,20 +125,3 @@ function VbsnList () {
 }
 
 export default VbsnList
-
-/*
-<div className="p-10 flex flex-row justify-start items-start gap-10">
-        {sample_links.map((sample, index) => {
-          return <TestbedCard key={index} preview={sample.preview} title={sample.title} description={sample.description} action={sample.action}/>
-        })}
-      </div>
-
-      <div className="p-10 flex flex-row justify-start items-start gap-10">
-        {
-        sample_test.map((sample, index) => {
-          return <TestBed key={index} title={sample.title} description={sample.description} task_list={sample.task_list}/>
-        })
-        }
-      </div>
-
-*/

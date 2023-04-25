@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import LogOutModal from "../components/LogOutModal";
 import LogOutButton from "../components/LogOutModal";
 import TestbedCard from "../components/TestbedCard";
@@ -11,6 +11,12 @@ function VbsnList () {
   const [newTestbed, setNewTestbed] = useState(false)
 
   const navigate = useNavigate()
+  const [vbsn, setVbsn] = useState([])
+
+  useEffect(()=> {
+    localStorage.setItem('myData', JSON.stringify({name: 'John', age: 30}));
+    
+  }, []) 
 
   var sample_history = [
     {

@@ -4,6 +4,9 @@ import { faPlay, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import IDETest from "../components/IDETest";
 import Popup from "../components/Popup";
 import EditTest from "../components/EditTest";
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+
 import { useState } from 'react'
 
 function IDE() {
@@ -94,7 +97,7 @@ function IDE() {
         </div> */
 
   return (
-    <div className="flex flex-col flex-1 h-full w-full px-10">
+    <div className="flex flex-col flex-1 h-full w-full px-10 pb-5">
       <div class="flex flex-col w-full gap-8">
         <div className="flex flex-row justify-between gap-3 text-lg items-end">
           <div className='text-lg text-gray-500'>Integrated VBSN Editor</div>
@@ -118,9 +121,13 @@ function IDE() {
           </div>
         </div>
       </div>
-      <div className="text-center flex-1 flex justify-center items-center bg-sky-950 flex-col">
+      <div className="flex-1 flex justify-center items-center bg-sky-950 flex-col h-full">
         <div className="text-5xl text-white pb-4 self-start ml-24">Begin Coding Below:</div>
-        <textarea rows="40" cols="304" placeholder="print(&quot;Hello, World!&quot;)"></textarea>
+        <CodeMirror
+          value="console.log('hello world!');"
+          height="500px"
+          width="800px"
+        />
       </div>
       <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
         <div className="edit-test-wrapper">

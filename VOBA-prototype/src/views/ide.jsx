@@ -79,13 +79,21 @@ function IDE() {
   let location = useLocation();
 
   function initializeTestTypes() {
-    var currVBSNs = localStorage.getItem('vbsns');
-    var vbsns = JSON.parse(currVBSNs);
+    var currTests = [];
+    if (location.state != null) {
+      setTestSelections(location.state.selections);
 
-    console.log(testSelections);
+      for (const [key, value] of Object.entries(location.state.selections)) {
+        if (value) {
+          currTests.push(key);
+        }
+      }
+    } else {
+      var currVBSNs = localStorage.getItem('vbsns');
+      var vbsns = JSON.parse(currVBSNs);
 
-    var currTests = Object.values(vbsns[0])[3];
-    console.log(vbsns)
+      currTests = Object.values(vbsns[0])[3];
+    }
 
     setTests(tests.map((test) => {
       for (let i = 0; i < currTests.length; i++) {
@@ -125,10 +133,6 @@ function IDE() {
   }
 
   useEffect(() => {
-    if (location.state != null) {
-      console.log("here");
-      setTestSelections(location.state.selections);
-    }
     initializeTestTypes();
     setReport(JSON.parse(localStorage.getItem('reports')));
   }, []);

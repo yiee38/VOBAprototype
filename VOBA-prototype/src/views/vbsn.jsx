@@ -51,7 +51,6 @@ function VbsnList () {
     const newVBSN = [...vbsn, {id:vbsn[vbsn.length-1].id+1, title:nameInput, description:descInput}]
     localStorage.setItem('vbsns', JSON.stringify(newVBSN))
     setVbsn(newVBSN)
-    //navigate('/ide')
   }
 
   const handleDelete = (id) => {

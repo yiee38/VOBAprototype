@@ -19,6 +19,7 @@ function TestBeds () {
     if (!localStorage.getItem('testbeds')) {
       localStorage.setItem('testbeds', JSON.stringify([
         {
+          id: 0,
           title: 'myFirstTestbed',
           description: 'My first attempt at a Testbed - uses Text2Voice, Firewall, and Audio Masking tests with myFirstVBSN'
         }
@@ -89,17 +90,17 @@ function TestBeds () {
   }
 
   const handleCreate = () =>{
-    const newTestBeds = [...testbeds, {title:nameInput, description:descInput}]
+    const newTestBeds = [...testbeds, {id:testbeds[testbeds.length-1].id+1, title:nameInput, description:descInput}]
     console.log(newTestBeds)
-
-    //{"title":"myFirstTestbed","description":"My first attempt at a Testbed - uses Text2Voice, Firewall, and Audio Masking tests with myFirstVBSN"}
     localStorage.setItem('testbeds', JSON.stringify(newTestBeds))
     setTestbeds(newTestBeds)
     navigate('/ide', { state: { selections: taskSelection }})
   }
 
   const handleDelete = (id) => {
-    console.log(id)
+    const newTestBeds = testbeds.filter(a => a.id !== id)
+    localStorage.setItem('testbeds', JSON.stringify(newTestBeds))
+    setTestbeds(newTestBeds)
   }
 
 
@@ -153,13 +154,13 @@ function TestBeds () {
             </div>
           }
         </div>
-        <div className='flex flex-col gap-4 w-full'>
+        <div className='flex flex-col gap-4 w-full flex-wrap'>
           <div className="flex flex-row justify-between items-end">
             <span className="text-lg text-gray-500">Previous Testbeds</span>
           </div>
           <div className="w-full flex flex-row gap-10 justify-start">
             {testbeds.map((history, index) => {
-              return <TestbedCard key={history.title} title={history.title} description={history.description} handleDelete={()=>handleDelete(index)}/> })
+              return <TestbedCard key={history.id} title={history.title} description={history.description} handleDelete={()=>handleDelete(history.id)}/> })
             }
           </div>
         </div>

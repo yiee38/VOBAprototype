@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import LogOutModal from "../components/LogOutModal";
 import LogOutButton from "../components/LogOutModal";
 import TestbedCard from "../components/TestbedCard";
@@ -21,11 +21,37 @@ function Database () {
     {title: 'Report 5', date: '4/12/23', tests:'Audio File Clearance'},
     {title: 'Report 6', date: '4/12/23', tests:'Voice2Text, Audio Masking'},
   ]);
+  const [data, setData] = useState([])
 
+  useEffect(()=>{
+    setData(JSON.parse(localStorage.getItem('reports')))
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
+    const  newData = []
+    const reports = JSON.parse(localStorage.getItem('reports'))
+      if (reports) {
+        reports.map((report) => {
+          console.log(report)
+          const title = report.title
+          const description = report.description
+          const date = report.date
+          const tests = []
+          const notTested = []
+          report.tests.map((test)=>{
+            if (test.type === 'current'){
+              tests.push(test.title)
+            }
+            else {
+              notTested.push(test.title)
+            }
+          })
+          newData.push({title:title, tests:tests, notTested:notTested, date:date, description:description})
+        })
+        console.log(newData)
+        setData(newData)
+
+      }
+  },[])
+
 
     // checkbox
     const [checkedItems, setCheckedItems] = useState([]);
@@ -43,10 +69,10 @@ function Database () {
 
   
     const filteredList = checkedItems.length === 0
-    ? sample // if checkedItems is empty, return the original list
-    : sample.filter((item) =>
+    ? data // if checkedItems is empty, return the original list
+    : data.filter((item) =>
       checkedItems.some(word =>
-        item.tests.toLowerCase().includes(word.toLowerCase())
+        item.tests.join(" ").toLowerCase().includes(word.toLowerCase())
     ));
   
 
@@ -99,11 +125,10 @@ function Database () {
           <div className='text-lg'>Results</div>
           <div className='flex flex-col gap-4 w-full'>
             {filteredList.map((result, index) => {
-              return <SearchListItem title={result.title} date={result.date} tests={result.tests} />
+              return <SearchListItem title={result.title} date={result.date} tests={result.tests} notTested={result.notTested} description={result.description}/>
             })}
           </div>
         </div>
-        <p>Checked items: {checkedItems.join(', ')}</p>
 
       </div>
     </div>
@@ -111,20 +136,3 @@ function Database () {
 }
 
 export default Database
-
-/*
-<div className="p-10 flex flex-row justify-start items-start gap-10">
-        {sample_links.map((sample, index) => {
-          return <TestbedCard key={index} preview={sample.preview} title={sample.title} description={sample.description} action={sample.action}/>
-        })}
-      </div>
-
-      <div className="p-10 flex flex-row justify-start items-start gap-10">
-        {
-        sample_test.map((sample, index) => {
-          return <TestBed key={index} title={sample.title} description={sample.description} task_list={sample.task_list}/>
-        })
-        }
-      </div>
-
-*/

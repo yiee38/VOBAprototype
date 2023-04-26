@@ -21,7 +21,8 @@ function TestBeds () {
         {
           id: 0,
           title: 'myFirstTestbed',
-          description: 'My first attempt at a Testbed - uses Text2Voice, Firewall, and Audio Masking tests with myFirstVBSN'
+          description: 'My first attempt at a Testbed - uses Text2Voice, Firewall, and Audio Masking tests with myFirstVBSN',
+          tests: ['Audio Enhancement', 'Text2Voice', 'Audio Masking', 'Firewall']
         }
       ]))
       
@@ -83,7 +84,14 @@ function TestBeds () {
   }
 
   const handleCreate = () =>{
-    const newTestBeds = [...testbeds, {id:testbeds[testbeds.length-1].id+1, title:nameInput, description:descInput}]
+    var newTestBeds
+    if (testbeds.length !== 0){
+      newTestBeds = [...testbeds, {id:testbeds[testbeds.length-1].id+1, title:nameInput, description:descInput}]
+    }
+    else {
+      newTestBeds = [{id:0, title:nameInput, description:descInput}]
+    }
+     
     console.log(newTestBeds)
     localStorage.setItem('testbeds', JSON.stringify(newTestBeds))
     setTestbeds(newTestBeds)
@@ -170,10 +178,23 @@ function TestBeds () {
           </div>
           <div className="w-full flex flex-row gap-10 justify-start flex-wrap">
             {testbeds.map((history, index) => {
+              const tasks = {'Audio Enhancement':false,
+                'Audio Masking':false,
+                'Audio File Clearance':false,
+                'Text2Voice':false,
+                'Voice2Text':false,
+                'Voice2Voice':false,
+                'User Authentication':false,
+                'Firewall':false,
+                'Blockchain Encryption':false,
+              }
+              history['tests'].map((test)=> {
+                tasks[test] = true
+              })
               return (
                 <TestbedCard 
                   key={history.id} 
-                  taskSelection={taskSelection} 
+                  taskSelection={tasks} 
                   id={history.id} 
                   title={history.title} 
                   description={history.description} 

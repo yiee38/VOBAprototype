@@ -8,6 +8,16 @@ import {
 } from "react-router-dom";
 
 function VbsnList () {
+  const intialSelections= {'Audio Enhancement':false,
+  'Audio Masking':false,
+  'Audio File Clearance':false,
+  'Text2Voice':false,
+  'Voice2Text':false,
+  'Voice2Voice':false,
+  'User Authentication':false,
+  'Firewall':false,
+  'Blockchain Encryption':false,
+}
   const [newTestbed, setNewTestbed] = useState(false)
 
   const navigate = useNavigate()
@@ -32,14 +42,16 @@ function VbsnList () {
 
   var presets = [
     {
+      id: 999,
       title: 'VBSN sample 1 - Supersafe ChatRoom',
       description: 'VBSN Sample with bloackchain encryption, audio enhancement, and audio masking',
-      tests: [1, 2, 3, 4, 5]
+      tests: ['Blockchain Encryption', 'Audio Enhancement', 'Audio Masking']
     },
     {
+      id: 998,
       title: 'VBSN sample 2 - Voice Master',
-      description: 'VBSN Sample with bloackchain encryption, audio enhancement, audio masking, and user authentication',
-      tests: [1, 2, 3, 4, 5]
+      description: 'VBSN Sample with audio enhancement, audio masking, Text2Voice, and Voice2Voice transcription',
+      tests: ['Audio Masking', 'Audio Enhancement', 'Text2Voice', 'Voice2Voice']
     }
   ]
 
@@ -102,7 +114,7 @@ function VbsnList () {
           </div>
           <div className="w-full flex flex-row gap-10 justify-start flex-wrap">
             {vbsn.map((history, _) => {
-              return <TestbedCard tests={history.tests} key={history.id} title={history.title} description={history.description} handleDelete={()=>handleDelete(history.id)}/> })
+              return <TestbedCard taskSelection={intialSelections} selected={history} tests={history.tests} key={history.id} title={history.title} description={history.description} handleDelete={()=>handleDelete(history.id)}/> })
             }
           </div>
         </div>
@@ -112,7 +124,7 @@ function VbsnList () {
           </div>
           <div className="w-full flex flex-row gap-10 justify-start">
             {presets.map((history, index) => {
-              return <TestbedCard tests={history.tests} key={history.title} preset title={history.title} description={history.description} handleDelete={()=>handleDelete(index)}/>})
+              return <TestbedCard taskSelection={intialSelections} selected={history} tests={history.tests} key={history.title} preset title={history.title} description={history.description} handleDelete={()=>handleDelete(index)}/>})
             }
           </div>
         </div>

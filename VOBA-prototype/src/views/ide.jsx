@@ -6,9 +6,9 @@ import Popup from "../components/Popup";
 import EditTest from "../components/EditTest";
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import { useLocation } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react'
+import { loremIpsum } from "lorem-ipsum";
 
 /*
 'Audio Enhancement':false,
@@ -23,7 +23,7 @@ import { useState } from 'react'
 */
 
 function IDE() {
-  var initial_tests = [
+  const initial_tests = [
     {
       id: 0,
       title: 'Audio Enhancement',
@@ -75,14 +75,15 @@ function IDE() {
   const [tests, setTests] = useState(initial_tests);
   const [report, setReport] = useState([]);
   const [testSelections, setTestSelections] = useState([]);
+  const navigate = useNavigate();
 
   let location = useLocation();
 
   function initializeTestTypes() {
     var currTests = [];
-    if (location.state != null) {
+    if (location.state !== null && location.state.selections !== null) {
+      console.log(location.state)
       setTestSelections(location.state.selections);
-
       for (const [key, value] of Object.entries(location.state.selections)) {
         if (value) {
           currTests.push(key);
@@ -95,22 +96,23 @@ function IDE() {
       currTests = Object.values(vbsns[0])[3];
     }
 
-    setTests(tests.map((test) => {
-      for (let i = 0; i < currTests.length; i++) {
-        if (test.title === currTests[i]) {
-          if (test.type === "current") {
-            return {
-              ...test, type: "available"
-            };
-          } else {
-            return {
-              ...test, type: "current"
-            };
-          }
+    console.log(location)
+    const selected = location.state.selections
+    console.log(selected)
+    const newTests = tests
+    console.log(newTests)
+
+    Object.keys(selected).map((test) => {
+      console.log(test)
+      console.log(selected[test])
+      for (let i = 0; i<newTests.length; i++) {
+        if (selected[test] === true && test === newTests[i].title){
+          newTests[i].type = "current"
         }
       }
-      return test;
-    }))
+    })
+
+    setTests(newTests)
   }
 
   function updateTestTypes(index) {
@@ -137,18 +139,6 @@ function IDE() {
     setReport(JSON.parse(localStorage.getItem('reports')));
   }, []);
 
-  useEffect(() => {
-    var currTests = [];
-
-    for (let i = 0; i < tests.length; i++) {
-      if (tests[i].type === 'current') {
-        currTests.push(tests[i].title);
-      }
-    }
-
-    localStorage.setItem('vbsns', JSON.stringify([{id: 0, title: 'myFirstVBSN',description: 'My first attempt at a VBSN', tests: currTests}]));
-  }, [tests]);
-
   function setReportItem() {
     var currVBSNs = localStorage.getItem('vbsns');
     var vbsns = JSON.parse(currVBSNs);
@@ -156,24 +146,33 @@ function IDE() {
     var month = newDate.getMonth() + 1;
     var day = newDate.getDate();
     var year = newDate.getFullYear();
+    const vbsn = location.state.selectedVbsn    
+    var testText = ""
+    Object.keys(tests).map((test) => {
+      if (tests[test].type === 'current'){
+        testText = testText + tests[test].title
+        testText = testText + " | "
+      }
+    })
 
-    const newReport = [...report, {title: vbsns[0].title + 'Report', description: 'Report for ' + vbsns[0].title, tests: vbsns[0].tests, date: month + '/' + day + '/' + year}];
-
+    var newReport
+    if (report){
+        newReport = [...report, 
+        {title: 'Report ' + vbsn.title, 
+        description: 'Report for ' + vbsn.title + ' with these tests: '+ testText, 
+        tests: tests,
+        date: month + '/' + day + '/' + year}
+        ];
+      }
+    else {
+      newReport = [{title: 'Report ' + vbsn.title, 
+      description: 'Report for ' + vbsn.title + ' with these tests: '+ testText, 
+      tests: tests,
+      date: month + '/' + day + '/' + year}];
+    }
     localStorage.setItem('reports', JSON.stringify(newReport))
     setReport(newReport);
   }
-
-    /*
-    <div class="flex flex-row jusitfy-end items-center w-ful ">
-          <a href={'/report'} className="">
-            <button className="mt-10">
-              <span>Run </span>
-            </button>
-          </a>
-          <button class="" onClick={() => setButtonPopup(true)}>
-              <span>Edit</span>
-          </button>
-        </div> */
 
   return (
     <div className="flex flex-col flex-1 h-full w-full px-10 pb-5">
@@ -185,10 +184,34 @@ function IDE() {
               <FontAwesomeIcon icon={faPenToSquare} />
               <span >Edit</span>
             </button>
-            <a href={'/report'} className="flex flex-row gap-1 items-center hover:text-blue-button-dark" onClick={() => setReportItem()}>
+            <button className="flex flex-row gap-1 items-center hover:text-blue-button-dark" onClick={() => {
+              setReportItem()
+              const testsForThething = []
+              const notTested = []
+
+              tests.map((test)=>{
+                if (test.type === 'current'){
+                  testsForThething.push(test.title)
+                }
+                else {
+                  notTested.push(test.title)
+                }
+              })
+              navigate('/report', {
+                state: {
+                  title: report.title, 
+                  tests: testsForThething, 
+                  notTested: notTested, 
+                  description: report.description, 
+                  date: report.date,
+                  returnTo: '/ide',
+                  vbsn: location.state.selectedVbsn
+                }}
+              )
+            }}>
               <FontAwesomeIcon icon={faPlay} />
-            <span>Run </span>
-            </a>
+              <span>Run </span>
+            </button>
           </div>
         </div>
         <div className="flex flex-row items-end gap-5">

@@ -13,10 +13,9 @@ function TestbedCard(props) {
     }
   }
   const navigate = useNavigate()
-
   const handleNavigate = () => {
-    navigate('/ide', { state: { selections: props.taskSelection, selectedVbsn: selected }})
-
+    
+    navigate('/ide', { state: { selections: props.taskSelection, selectedVbsn: props.selected }})
   }
 
   return (

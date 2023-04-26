@@ -3,31 +3,46 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateLeft, faPrint, faShare } from '@fortawesome/free-solid-svg-icons';
 import { loremIpsum } from "lorem-ipsum";
 import { CircularProgressbar } from 'react-circular-progressbar';
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import 'react-circular-progressbar/dist/styles.css';
 
 
 
 function Report(props) {
+  const location = useLocation()
+  const navigate = useNavigate()
+  console.log(location.state)
   var report = {
-    title: "Testbed #1", 
+    title: location.state.title, 
     author: "Test Persona",
-    date: "04/19/2023",
-    type: "All applicable tests",
+    date: location.state.date,
+    description: location.state.description, 
     insight: loremIpsum({count:2, units:"paragraphs"}),
     score: 86,
-    passed: ['Privacy Test', 'Voice to Text Tests', 'Voice Quality Tests'],
-    failed: ['Universal Translation Test', 'General Audio Press Test'],
+    passed: location.state.tests.slice(0, 3),
+    failed: location.state.tests.slice(3),
+    untested: location.state.notTested
   }
+  const handleClick = () => {
+    if (location.state.returnTo==='/ide'){
+      navigate('/ide', {state: {selections: [], selectedVbsn: location.state.vbsn}})
+    }
+    else {
+      console.log('hi')
+      navigate('/database')
+    }
+  }
+
   return (
     <div className="flex flex-col flex-1 h-full w-full px-10 gap-8">
-      <div class="flex flex-col w-full gap-8">
+      <div className="flex flex-col w-full gap-8">
         <div className="flex flex-row justify-between gap-3 text-lg items-end">
           <div className='text-lg text-gray-500'>VBSN test report</div>
             <div className="flex flex-row justify-end gap-3 text-blue-button">
-              <a href={'/ide'} className="flex flex-row gap-1 items-center hover:text-blue-button-dark">
+              <button onClick={handleClick} className="flex flex-row gap-1 items-center hover:text-blue-button-dark">
                 <FontAwesomeIcon icon={faRotateLeft} />
-                <span>Return to IDE</span>
-              </a>
+                {location.state.returnTo==='/ide' ? <span>Return to IDE</span>: <span>Return to database</span>}
+              </button>
               <button className="flex flex-row gap-1 items-center hover:text-blue-button-dark" onClick={() => setButtonPopup(true)}>
                 <FontAwesomeIcon icon={faShare} />
                 <span>Print/Share</span>
@@ -45,12 +60,18 @@ function Report(props) {
           </div>
         </div>
         <div className="flex flex-col gap-3" >
+          <div className="text-lg">Description</div>
+          <div className="flex flex-row">
+            <div>{report.description}</div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-3" >
           <div className="text-lg">Insights</div>
           <div className="flex flex-row">
             <div>{report.insight}</div>
           </div>
         </div>
-        <div className="flex flex-row w-full gap-64">
+        <div className="flex flex-row w-full gap-48">
           <div className="w-1/4">
             <CircularProgressbar value={report.score} text={`${report.score}%`} 
               styles={
@@ -87,6 +108,16 @@ function Report(props) {
               {report.failed.map((test, index) => {
                 return(
                   <div key={index} className="text-red-800">{test}</div>
+                )
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col">
+              <div className="text-gray-500">Not tested: </div>
+              {report.untested.map((test, index) => {
+                return(
+                  <div key={index} className="text-gray-500">{test}</div>
                 )
               })}
             </div>

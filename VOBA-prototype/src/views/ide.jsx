@@ -80,6 +80,7 @@ function IDE() {
     var vbsns = JSON.parse(currVBSNs);
 
     var currTests = Object.values(vbsns[0])[3];
+    console.log(vbsns)
 
     setTests(tests.map((test) => {
       for (let i = 0; i < currTests.length; i++) {

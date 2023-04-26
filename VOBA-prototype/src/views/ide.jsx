@@ -127,6 +127,8 @@ function IDE() {
   useEffect(() => {
     if (location.state != null) {
       console.log("here");
+      console.log(location.state.selections)
+      
       setTestSelections(location.state.selections);
     }
     initializeTestTypes();

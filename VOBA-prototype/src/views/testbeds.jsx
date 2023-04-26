@@ -1,6 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import LogOutModal from "../components/LogOutModal";
-import LogOutButton from "../components/LogOutModal";
 import TestbedCard from "../components/TestbedCard";
 import TestBed from "../components/CreateTestbedCard";
 import {
@@ -72,13 +70,6 @@ function TestBeds () {
     'Blockchain Encryption':false,
   })
 
-  var sample_history = [
-    {
-      title: 'myFirstTestbed',
-      description: 'My first attempt at a Testbed - uses Text2Voice, Firewall, and Audio Masking tests with myFirstVBSN'
-    }
-  ]
-
   const handleTaskSelection = (task) => {
     const newTasks = taskSelection
     newTasks[task] = !newTasks[task]
@@ -124,7 +115,7 @@ function TestBeds () {
             </div>
           </div>
           { newTestbed &&
-            <div className="w-full flex flex-col justify-start">
+            <div className="w-full flex flex-col justify-start ">
               <label htmlFor="name" className="text-gray-500">name: </label>
               <input 
                 name="name" 
@@ -139,7 +130,7 @@ function TestBeds () {
                 value={descInput}
                 onChange={(e) => {setDescInput(e.target.value)}}
               />
-              <div className="w-full flex flex-row gap-10 justify-start">
+              <div className="w-full flex flex-row gap-10 justify-start pt-3">
                 {sample_test.map((sample, index) => {
                   return <TestBed 
                     key={index} 
@@ -154,11 +145,11 @@ function TestBeds () {
             </div>
           }
         </div>
-        <div className='flex flex-col gap-4 w-full flex-wrap'>
+        <div className='flex flex-col gap-4 w-full '>
           <div className="flex flex-row justify-between items-end">
             <span className="text-lg text-gray-500">Previous Testbeds</span>
           </div>
-          <div className="w-full flex flex-row gap-10 justify-start">
+          <div className="w-full flex flex-row gap-10 justify-start flex-wrap">
             {testbeds.map((history, index) => {
               return <TestbedCard key={history.id} title={history.title} description={history.description} handleDelete={()=>handleDelete(history.id)}/> })
             }
@@ -170,20 +161,3 @@ function TestBeds () {
 }
 
 export default TestBeds
-
-/*
-<div className="p-10 flex flex-row justify-start items-start gap-10">
-        {sample_links.map((sample, index) => {
-          return <TestbedCard key={index} preview={sample.preview} title={sample.title} description={sample.description} action={sample.action}/>
-        })}
-      </div>
-
-      <div className="p-10 flex flex-row justify-start items-start gap-10">
-        {
-        sample_test.map((sample, index) => {
-          return <TestBed key={index} title={sample.title} description={sample.description} task_list={sample.task_list}/>
-        })
-        }
-      </div>
-
-*/

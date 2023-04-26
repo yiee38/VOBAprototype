@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import TestbedCard from "../components/TestbedCard";
 import TestBed from "../components/CreateTestbedCard";
 import {
@@ -10,10 +10,12 @@ function TestBeds () {
   const [testbeds, setTestbeds] = useState([])
   const [nameInput, setNameInput] = useState('default')
   const [descInput, setDescInput] = useState('default')
+  const [vbsns, setVbsns] = useState([])
+  const [selected, setSelected] = useState({});
   const navigate = useNavigate()
 
   useEffect(()=> {
-    console.log(localStorage.getItem('testbeds'))
+    setVbsns(JSON.parse(localStorage.getItem('vbsns')))
     if (!localStorage.getItem('testbeds')) {
       localStorage.setItem('testbeds', JSON.stringify([
         {
@@ -85,13 +87,17 @@ function TestBeds () {
     console.log(newTestBeds)
     localStorage.setItem('testbeds', JSON.stringify(newTestBeds))
     setTestbeds(newTestBeds)
-    navigate('/ide', { state: { selections: taskSelection }})
+    navigate('/ide', { state: { selections: taskSelection, selectedVbsn: selected }})
   }
 
   const handleDelete = (id) => {
     const newTestBeds = testbeds.filter(a => a.id !== id)
     localStorage.setItem('testbeds', JSON.stringify(newTestBeds))
     setTestbeds(newTestBeds)
+  }
+
+  const handleSelect = (thing) => {
+    setSelected(thing)
   }
 
 
@@ -107,7 +113,7 @@ function TestBeds () {
                   {newTestbed? 'Hide Options':'Show Options'}
                 </span>
               </button>  
-              <button className="primary-button text-lg" onClick={handleCreate}>
+              <button className="primary-button text-lg disabled:bg-gray-500" onClick={handleCreate} disabled={selected.id ==undefined}>
                 <span className="px-1">
                   Create Testbed
                 </span>
@@ -116,6 +122,7 @@ function TestBeds () {
           </div>
           { newTestbed &&
             <div className="w-full flex flex-col justify-start ">
+              
               <label htmlFor="name" className="text-gray-500">name: </label>
               <input 
                 name="name" 
@@ -144,6 +151,18 @@ function TestBeds () {
 
             </div>
           }
+          <div className='flex flex-col gap-2'>
+            <div className='text-salmon-report text-lg'>Please select a vbsn before going to testbed</div>
+            <div className='flex flex-row flex-wrap gap-3'>
+              {vbsns.map((vbsn, _) => {
+                if (vbsn.id === selected.id)
+                  return <button onClick={()=>{handleSelect(vbsn)}} key={vbsn.id} className='bg-blue-button border-blue-button border text-white p-1 hover:cursor-pointer'>{vbsn.title}</button>
+                else 
+                  return <button onClick={()=>{handleSelect(vbsn)}} key={vbsn.id} className='hover:bg-blue-button border-blue-button border hover:text-white p-1 hover:cursor-pointer'>{vbsn.title}</button>
+              })}
+            </div>
+          </div>
+          
         </div>
         <div className='flex flex-col gap-4 w-full '>
           <div className="flex flex-row justify-between items-end">
@@ -151,7 +170,17 @@ function TestBeds () {
           </div>
           <div className="w-full flex flex-row gap-10 justify-start flex-wrap">
             {testbeds.map((history, index) => {
-              return <TestbedCard key={history.id} title={history.title} description={history.description} handleDelete={()=>handleDelete(history.id)}/> })
+              return (
+                <TestbedCard 
+                  key={history.id} 
+                  taskSelection={taskSelection} 
+                  id={history.id} 
+                  title={history.title} 
+                  description={history.description} 
+                  handleDelete={()=>handleDelete(history.id)}
+                  selected={selected}
+                /> )
+              })
             }
           </div>
         </div>

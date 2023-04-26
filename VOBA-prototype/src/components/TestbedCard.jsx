@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 function TestbedCard(props) {
   const [deleteTest, setDeleteTest] = useState(false);
@@ -10,6 +11,12 @@ function TestbedCard(props) {
     else {
       props.handleDelete(props.title)
     }
+  }
+  const navigate = useNavigate()
+
+  const handleNavigate = () => {
+    navigate('/ide', { state: { selections: props.taskSelection, selectedVbsn: selected }})
+
   }
 
   return (
@@ -28,11 +35,11 @@ function TestbedCard(props) {
                 </span>
               </button>  
             }         
-            <a href='/ide' className="primary-button text-base" >
+            <button onClick={handleNavigate} className="primary-button text-base disabled:bg-gray-500" disabled={props.selected !== undefined && props.selected.id === undefined} >
               <span className="px-1">
                 Access
               </span>
-            </a>  
+            </button>  
           </div>
         </div>
 

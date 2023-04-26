@@ -89,6 +89,12 @@ function TestBeds () {
   }
 
   const handleCreate = () =>{
+    const newTestBeds = [...testbeds, {title:nameInput, description:descInput}]
+    console.log(newTestBeds)
+
+    //{"title":"myFirstTestbed","description":"My first attempt at a Testbed - uses Text2Voice, Firewall, and Audio Masking tests with myFirstVBSN"}
+    localStorage.setItem('testbeds', JSON.stringify(newTestBeds))
+    setTestbeds(newTestBeds)
     navigate('/ide', { state: { selections: taskSelection }})
   }
 

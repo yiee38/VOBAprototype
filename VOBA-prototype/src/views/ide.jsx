@@ -74,10 +74,15 @@ function IDE() {
   const [buttonPopup, setButtonPopup] = useState(false);
   const [tests, setTests] = useState(initial_tests);
   const [report, setReport] = useState([]);
+  const [testSelections, setTestSelections] = useState([]);
+
+  let location = useLocation();
 
   function initializeTestTypes() {
     var currVBSNs = localStorage.getItem('vbsns');
     var vbsns = JSON.parse(currVBSNs);
+
+    console.log(testSelections);
 
     var currTests = Object.values(vbsns[0])[3];
 
@@ -119,8 +124,12 @@ function IDE() {
   }
 
   useEffect(() => {
+    if (location.state != null) {
+      console.log("here");
+      setTestSelections(location.state.selections);
+    }
     initializeTestTypes();
-    setReport(JSON.parse(localStorage.getItem('reports')))
+    setReport(JSON.parse(localStorage.getItem('reports')));
   }, []);
 
   useEffect(() => {
@@ -143,11 +152,7 @@ function IDE() {
     var day = newDate.getDate();
     var year = newDate.getFullYear();
 
-    console.log(report);
-
     const newReport = [...report, {title: vbsns[0].title + 'Report', description: 'Report for ' + vbsns[0].title, tests: vbsns[0].tests, date: month + '/' + day + '/' + year}];
-
-    console.log(newReport);
 
     localStorage.setItem('reports', JSON.stringify(newReport))
     setReport(newReport);

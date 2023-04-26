@@ -21,7 +21,7 @@ function TopBar (props) {
         </a>
         <a href={`/vbsns`} >
           <span className={`m-0 text-center hover:text-blue-button-dark ${path.pathname === '/vbsns' ? 'text-zinc-900':'text-blue-button'}`}>
-            VBSN Demos
+            VBSN
           </span>
         </a>
         <a href={`/database`} >

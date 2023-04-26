@@ -85,11 +85,20 @@ function TestBeds () {
 
   const handleCreate = () =>{
     var newTestBeds
+    const selectedTests = []
+    Object.keys(taskSelection).map((task)=> {
+      if (taskSelection[task]){
+        selectedTests.push(task)
+
+      }
+
+    })
+
     if (testbeds.length !== 0){
-      newTestBeds = [...testbeds, {id:testbeds[testbeds.length-1].id+1, title:nameInput, description:descInput}]
+      newTestBeds = [...testbeds, {id:testbeds[testbeds.length-1].id+1, title:nameInput, description:descInput, tests: selectedTests}]
     }
     else {
-      newTestBeds = [{id:0, title:nameInput, description:descInput}]
+      newTestBeds = [{id:0, title:nameInput, description:descInput, tests: [selectedTests]}]
     }
      
     console.log(newTestBeds)
@@ -188,7 +197,9 @@ function TestBeds () {
                 'Firewall':false,
                 'Blockchain Encryption':false,
               }
+              console.log(history['tests'])
               history['tests'].map((test)=> {
+                console.log(test)
                 tasks[test] = true
               })
               return (

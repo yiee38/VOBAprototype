@@ -10,7 +10,7 @@ function SearchListItem(props) {
   return (
     <div className='flex flex-row justify-between'>
       <div className='text-lg'>{props.title}</div>
-      <div className='text-lg'>{props.tests.join(' | ')}</div>
+      <div className='text-lg truncate w-1/3'>{props.tests.join(' | ')}</div>
       <div className='flex flex-row justify-start gap-8 items-center'>
         <div className='text-lg text-gray-500'>{props.date}</div>
         <button onClick={handleAccess} className='text-lg text-blue-button hover:text-blue-button-dark'>

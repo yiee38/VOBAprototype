@@ -227,8 +227,8 @@ function IDE() {
         <div className="text-5xl text-white pb-4 self-start ml-24">Begin Coding Below:</div>
         <CodeMirror
           value="console.log('hello world!');"
-          height="500px"
-          width="800px"
+          height="60vh"
+          width="75vw"
         />
       </div>
       <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>

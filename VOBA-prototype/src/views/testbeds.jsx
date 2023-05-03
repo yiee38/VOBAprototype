@@ -4,6 +4,7 @@ import TestBed from "../components/CreateTestbedCard";
 import {
   useNavigate,
 } from "react-router-dom";
+import { loremIpsum } from 'lorem-ipsum';
 
 function TestBeds () {
   const [newTestbed, setNewTestbed] = useState(false)
@@ -117,6 +118,23 @@ function TestBeds () {
     setSelected(thing)
   }
 
+  const handleNew = () => {
+    const title = "Temproray VBSN " + testbeds.length
+    const description = loremIpsum({count:1, units:"sentence"})
+    const vbs = JSON.parse(localStorage.getItem('vbsns'))
+    var newVBS
+    const newOne = {id: vbs[vbs.length-1].id+1, title: title, description: description}
+    if (vbs.length !== 0){
+      newVBS = [...vbs, {id: vbs[vbs.length-1].id+1, title: title, description: description}]
+    }
+    else {
+      newVBS = [{id: vbs[vbs.length-1].id+1, title: title, description: description}]
+    }
+    localStorage.setItem('vbsns', JSON.stringify(newVBS))
+    
+    setVbsns(newVBS)
+    setSelected(newOne)
+  }
 
   return (
     <div className="flex flex-1 h-full w-full flex-col pt-10 px-10"> 
@@ -177,6 +195,9 @@ function TestBeds () {
                 else 
                   return <button onClick={()=>{handleSelect(vbsn)}} key={vbsn.id} className='hover:bg-blue-button border-blue-button border hover:text-white p-1 hover:cursor-pointer'>{vbsn.title}</button>
               })}
+              <div>
+              <button onClick={()=>{handleNew()}} className='bg-blue-button border-blue-button border text-white p-1 hover:cursor-pointer hover:bg-blue-button-dark'>Create New</button>
+              </div>
             </div>
           </div>
           
